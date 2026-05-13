@@ -1,0 +1,9 @@
+gradio
+google-genai
+python-dotenv
+requests
+bs4
+pydantic
+pytest
+fastapi 
+uvicorn
