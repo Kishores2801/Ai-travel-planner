@@ -31,7 +31,7 @@ def is_budget_realistic(city: str, daily_budget: float, trip_type: str, accommod
         # 3. Clean and Parse JSON
         # Removes Markdown code blocks if the LLM includes them
         clean_json = re.sub(r"```json|```", "", raw_output).strip()
-        data = json.loads(clean_json)
+        data = json.loads(clean_json) # the clean Json will be reused for making sure that cost on API doesn't rise
         
         return data.get("is_realistic", True) # Default to True if key is missing
         
@@ -60,7 +60,7 @@ def build_itinerary(request: TravelPlanRequests) -> str:
 
 
     prompt = f"""
-You are a practical travel planner. Create a realistic, budget-aware itinerary using the user's trip details.
+You are a practical travel planner & have experience in building itinerary for various kind of group in different budget from luxury to bootstrapped you are flexible. Create a realistic, budget-aware itinerary using the user's trip details.
 
 Trip Details:
 - Destination: {request.destination}
@@ -110,5 +110,6 @@ Keep the response between 700 and 900 words.
 For trips of 5 days or fewer, include day-by-day details.
 For trips longer than 5 days, group days into a maximum of 5 blocks and summarize the main activities.
 Prioritize itinerary quality, realistic logistics, and cost breakdown over long explanations.
+highlight area where they can save cost too, like budget friendly options are available as suggestions.
 """
     return prompt.strip()
